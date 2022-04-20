@@ -19,33 +19,38 @@
         </div>
     @endif
     
-    <table class="table table-bordered">
-        <tr>
-            <th>No.</th>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Role</th>
-            <th width="112px">Action</th>
-        </tr>
+    <table class="table table-striped border-dark text-dark">
+        <thead> 
+            <tr>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th width="112px">Action</th>
+            </tr>
+        </thead>
+        
         @foreach ($users as $user)
-        <tr>
-            <td>{{ ++$i }}</td>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->username }}</td>
-            <td>{{ $user->role }}</td>
-            <td>
-                <form action="{{ route('userList.destroy',$user->id) }}" method="POST">
-                    <a class="btn btn-primary" href="{{ route('userList.edit',$user->id) }}">
-                        <i class="fa-solid fa-pen"></i>
-                    </a>
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </form>
-            </td>
-        </tr>
+        <tbody>
+            <tr>
+                <td>{{ ++$i }}</td>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->username }}</td>
+                <td>{{ $user->role }}</td>
+                <td>
+                    <form action="{{ route('userList.destroy',$user->id) }}" method="POST">
+                        <a class="btn btn-primary" href="{{ route('userList.edit',$user->id) }}">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
         @endforeach
     </table>
     

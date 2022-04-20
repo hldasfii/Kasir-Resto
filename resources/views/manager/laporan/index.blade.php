@@ -1,6 +1,22 @@
 @extends('layouts.master')
 @section('content')
-    <div class="row">
+<div class="page-wrapper">
+    <div class="page-breadcrumb">
+        <div class="row align-items-center">
+            <div class="col-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 d-flex align-items-center">
+                <li class="breadcrumb-item">
+                    <a href="{{ url('/manager') }}" class="link">
+                    <i class="mdi mdi-home-outline fs-4"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Data Pembelian</li>
+                </ol>
+            </nav>
+            </div>
+        </div>
+    </div>
 
         <!-- Modal -->
         <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
@@ -26,40 +42,41 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#filterModal">
-                    Filter Transaksi
-                </button>
-                <h2>Daftar Transaksi</h2>
+    
+    <div class="row">
+        <!-- column -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                <div class="d-md-flex">
+                    <div>
+                        <button type="button" class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#filterModal">
+                            Filter Transaksi
+                        </button>
+                        <a href="/manager/laporan/transaksi_pdf" class="btn btn-primary" target="_blank" style="margin-left: 20px;">CETAK PDF</a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table mb-0 table-hover align-middle text-nowrap">
+                        <thead>
+                        <tr>
+                            <th class="border-top-0">No</th>
+                            <th class="border-top-0">Nama Pelanggan</th>
+                            <th class="border-top-0">Menu</th>
+                            <th class="border-top-0">Jumlah</th>
+                            <th class="border-top-0">Total</th>
+                            <th class="border-top-0">Nama Pegawai</th>
+                            <th class="border-top-0">Tanggal</th>
+                        </tr>
+                        <tbody id="loadDataTransaksi">
+                        </thead>
+                    </table>
+                </div>
+                <br>
             </div>
         </div>
     </div>
-
-    <br>
-
-    @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-    @endif
-    
-    <table class="table table-bordered">
-        <tr>
-            <th>No.</th>
-            <th>Nama Pelanggan</th>
-            <th>Nama Menu</th>
-            <th>Jumlah</th>
-            <th>Total</th>
-            <th>Nama Pegawai</th>
-            <th>Tanggal</th>
-        </tr>
-        <tbody id="loadDataTransaksi">
-
-        </tbody>
-    </table>        
+</div>
 @endsection
 @section('cjs')
     <script>

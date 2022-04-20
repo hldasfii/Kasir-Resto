@@ -50,7 +50,9 @@ Route::middleware('islogin')->group(function() {
         return view('manager.laporan.index');
     })->middleware('ismanager');
     // route
-    Route::get('/get-transaksi', [TransaksiController::class, 'filtering']); 
+    Route::get('/get-transaksi', [TransaksiController::class, 'filtering']);
+    
+    Route::get('/manager/laporan/transaksi_pdf', [TransaksiController::class, 'cetak_pdf'])->middleware('ismanager');
 
 
 

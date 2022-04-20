@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Models\Transaksi;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -102,5 +104,21 @@ class TransaksiController extends Controller
             $transaksis = Transaksi::whereBetween('created_at', [Carbon::parse($request->start_date), Carbon::parse(date($request->end_date) . ' 23:59:59')])->get()->sortByDesc('id');
         }
         return view('manager.laporan.load', compact('transaksis'))->render();
+    }
+
+    public function cetak_pdf(Request $request)
+    {
+        $employe = Auth::user()->name;
+        $role = Auth::user()->role;
+        $laporan = Transaksi::all();
+        $data = [
+            'employe' => $employe,
+            'role' => $role,
+            'laporan' => $laporan,
+        ];
+
+        $pdf = PDF::loadView('manager.laporan.laporan_pdf', $data);
+        // return $pdf->download('laporan-transaksi' . '.pdf');     -- Jika ingin langsung kedownload
+        return $pdf->stream();                                      // Jika hanya ingin preview
     }
 }
