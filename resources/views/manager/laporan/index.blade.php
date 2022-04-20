@@ -24,7 +24,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="filterModalLabel">Filter Transaksi</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -36,7 +36,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" id="btn-close-modal" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" onclick="filtering()">Save changes</button>
                     </div>
                 </div>
@@ -53,7 +53,8 @@
                         <button type="button" class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#filterModal">
                             Filter Transaksi
                         </button>
-                        <a href="/manager/laporan/transaksi_pdf" class="btn btn-primary" target="_blank" style="margin-left: 20px;">CETAK PDF</a>
+                        <a href="/manager/laporan/transaksi_pdf?all=true" class="btn btn-primary" target="_blank" id="btn-cetak">CETAK PDF</a>
+                        <button class="btn btn-secondary float-right" onclick="resetData()">Reset filter</button>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -103,6 +104,7 @@
             try {
                 const respons = await hitData(url, null, 'GET')
                 $('#loadDataTransaksi').html(respons);
+                
             } catch (error) {
                 console.log(error);
             }
@@ -111,8 +113,15 @@
         function filtering() {
             var startDate = $('#startDate').val()
             var endDate = $('#endDate').val()
+
             getData(`/get-transaksi?start_date=${startDate}&end_date=${endDate}`, null, 'GET')
-            $('#filterModal').modal('hide')
+            $('#btn-close-modal').click()
+            $('#btn-cetak').removeAttr('href').attr('href', `/manager/laporan/transaksi_pdf?all=${startDate}^${endDate}`)
+        }
+
+        function resetData() {
+            getData();
+            $('#btn-cetak').removeAttr('href').attr('href', `/manager/laporan/transaksi_pdf?all=true`)
         }
 
         getData();

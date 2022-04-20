@@ -15,6 +15,7 @@ class TransaksiController extends Controller
 {
     public function index(Request $request)
     {
+        
         $transaksis = Transaksi::where('nama_pegawai', Auth::user()->name)->latest()->paginate(5);
         return view('kasir.transaksi.index', compact('transaksis'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -110,7 +111,14 @@ class TransaksiController extends Controller
     {
         $employe = Auth::user()->name;
         $role = Auth::user()->role;
-        $laporan = Transaksi::all();
+        $queryLaporan = Transaksi::orderByDesc('id');
+        if($request->all != 'true'){
+            $dateExplode = explode('^', $request->all);
+            $startDate = $dateExplode[0];
+            $endDate = $dateExplode[1];
+            $queryLaporan->whereBetween('created_at', [Carbon::parse($startDate), Carbon::parse(date($endDate) . ' 23:59:59')]);
+        }
+        $laporan = $queryLaporan->get();
         $data = [
             'employe' => $employe,
             'role' => $role,
